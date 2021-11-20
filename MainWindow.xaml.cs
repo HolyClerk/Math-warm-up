@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Threading;
 
 namespace Mind_fastMath
 {
@@ -35,12 +36,14 @@ namespace Mind_fastMath
             sendResult.BorderBrush = (Brush)new BrushConverter().ConvertFrom("#2b2e34");
 
             resultLabel.Foreground = (Brush)new BrushConverter().ConvertFrom("#e6e6e7");
+
+            ComboBoxDiff.Background = (Brush)new BrushConverter().ConvertFrom("#2b2e34"); // залупа нерабочая
             // <-
         }
 
         private void userInField_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key.ToString() == "Return") 
+            if (e.Key.ToString() == "Return")
             {
                 TaskPatternCreator.AnswerCheck();
             }
@@ -58,10 +61,20 @@ namespace Mind_fastMath
             }
         }
 
+        private void CheckStateOfComboBox() 
+        {
+            if (ComboBoxDiff != null && ComboBoxTypeOf != null)
+            {
+                TaskPatternCreator.CreateTask();
+            }
+        }
+
         private void WinMouseDown(object sender, MouseButtonEventArgs e) => DragMove();
 
         private void sendResult_Click(object sender, RoutedEventArgs e) => TaskPatternCreator.AnswerCheck();
 
-        private void ComboBoxItem_Selected(object sender, RoutedEventArgs e) => TaskPatternCreator.CreateTask();
+        private void ComboBoxItem_Selected(object sender, RoutedEventArgs e) => CheckStateOfComboBox();
+
+        private void ComboBoxTypeOf_Selected(object sender, RoutedEventArgs e) => CheckStateOfComboBox();
     }
 }

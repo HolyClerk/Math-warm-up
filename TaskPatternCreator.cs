@@ -2,6 +2,7 @@
 using System.Media;
 using System.Windows.Media;
 using System.Windows;
+using System.Threading;
 
 namespace Mind_fastMath
 {
@@ -15,69 +16,80 @@ namespace Mind_fastMath
 
         private static Window _windowCopy = Application.Current.MainWindow;
 
-        private static int firstNumber;
+        private static double firstNumber;
 
-        private static int secondNumber;
+        private static double secondNumber;
 
-        /// <summary>
-        /// Создает случайные примеры в зависимости от сложности, установленной в комбо-боксе.
-        /// </summary>
+        // Возвращает правильный ответ в зависимости
+        // от выбранного типа задачи(сложение, умножение и т.д.)
+        private static double trueAnswer 
+        {
+            get
+            {
+                var actualWindow = (_windowCopy as MainWindow);
+
+                return actualWindow.ComboBoxTypeOf.SelectedIndex switch
+                {
+                    0 => firstNumber + secondNumber,
+                    1 => firstNumber - secondNumber,
+                    2 => firstNumber * secondNumber,
+                    3 => (double)(firstNumber / secondNumber),
+                    _ => firstNumber + secondNumber,
+                };
+            }
+        }
+
         public static void CreateTask()
         {
+            var rand = new Random();
             var actualWindow = (_windowCopy as MainWindow);
 
-            // нумерация = индекс в комбо-боксе сложностей(от легкого к сложному)
-            int difNum = actualWindow.ComboBoxDiff.SelectedIndex switch
-            {
-                0 => 10,
-
-                1 => 100,
-
-                2 => 1000,
-
-                3 => 10000,
-
-                _ => 1000,
-            };
-
-            // Рандомизация чисел в след. примере + обновление данных окна
-            var rand = new Random();
+            // Индекс комбо-бокса идет от легкого к сложному(от 0 до 3).
+            // 10 возводим в степень индекса+1
+            // Благодаря этому мы макс. число для примера,
+            // на основе которого можно сделать и мин. число
+            int difNum = Convert.ToInt32(Math.Pow(10, actualWindow.ComboBoxDiff.SelectedIndex + 1));
 
             firstNumber = rand.Next(difNum / 10, difNum);
             secondNumber = rand.Next(difNum / 10, difNum);
 
-            actualWindow.taskLabel.Content = $"{firstNumber} + {secondNumber}";
+            // Обновление данных окна, на основе генерированных
+            // чисел и выбранных позиций в комбо-боксе
+            char op = actualWindow.ComboBoxTypeOf.SelectedIndex switch
+            {
+                0 => '+',
+                1 => '-',
+                2 => '*',
+                3 => '/',
+                _ => '+',
+            };
+
+            actualWindow.taskLabel.Content = $"{firstNumber} {op} {secondNumber}";
             actualWindow.userInField.Text = "";
         }
 
-        /// <summary>
-        /// Проверяет поле ввода пользователя и создает новые задачи,
-        /// внося их в объекты из главного окна. 
-        /// </summary>
-        public static bool AnswerCheck()
+        public static void AnswerCheck()
         {
             var actualWindow = (_windowCopy as MainWindow);
 
-            _ = int.TryParse(actualWindow.userInField.Text, out int userAnswer);
+            _ = double.TryParse(actualWindow.userInField.Text, out double userAnswer);
 
-            if (userAnswer == firstNumber + secondNumber)
+            if (Math.Round(userAnswer, 1) == Math.Round(trueAnswer, 1))
             {
                 actualWindow.resultLabel.Foreground = (Brush)new BrushConverter().ConvertFrom("#73ef6d");
-                actualWindow.resultLabel.Content = "Верно!";
+                actualWindow.resultLabel.Content = $"Верно! {trueAnswer}";
 
                 PlayCorrectSound();
                 CreateTask();
-
-                return true;
             }
-
-            actualWindow.resultLabel.Foreground = (Brush)new BrushConverter().ConvertFrom("#ea102b");
-            actualWindow.resultLabel.Content = "Не верно!";
-
-            return false;
+            else 
+            {
+                actualWindow.resultLabel.Foreground = (Brush)new BrushConverter().ConvertFrom("#ea102b");
+                actualWindow.resultLabel.Content = "Не верно!";
+            }
         }
 
-        public static void PlayCorrectSound()
+        private static void PlayCorrectSound()
         {
             SoundPlayer SP = new SoundPlayer();
             SP.SoundLocation = "C:\\Users\\User\\Desktop\\correct.wav";
