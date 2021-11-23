@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 using System.Threading;
 
 namespace Mind_fastMath
@@ -19,7 +20,6 @@ namespace Mind_fastMath
          * Все функции, отвечающие за математические задачи используют объекты классе MainWindow
          * В будущем исправить
          */
-
         public MainWindow()
         {
             InitializeComponent();
@@ -40,6 +40,7 @@ namespace Mind_fastMath
             ComboBoxDiff.Background = (Brush)new BrushConverter().ConvertFrom("#2b2e34"); // залупа нерабочая
             // <-
         }
+
 
         private void userInField_KeyDown(object sender, KeyEventArgs e)
         {
@@ -63,6 +64,9 @@ namespace Mind_fastMath
 
         private void CheckStateOfComboBox() 
         {
+            // Из-за слишком быстрого запуска ComboBox'ы не
+            // успевают прогрузиться и выдают null при
+            // запросе
             if (ComboBoxDiff != null && ComboBoxTypeOf != null)
             {
                 TaskPatternCreator.CreateTask();

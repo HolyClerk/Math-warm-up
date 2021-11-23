@@ -16,13 +16,24 @@ namespace Mind_fastMath
 
         private static Window _windowCopy = Application.Current.MainWindow;
 
-        private static double firstNumber;
-
-        private static double secondNumber;
-
         // Возвращает правильный ответ в зависимости
         // от выбранного типа задачи(сложение, умножение и т.д.)
-        private static double trueAnswer 
+        private static double firstNumber;
+        private static double secondNumber;
+
+        private static int _Sminute;
+        private static int _Ssecond;
+        private static int _Smillisecond;
+
+        private static int _Eminute;
+        private static int _Esecond;
+        private static int _Emillisecond;
+
+        // Правильный ответ вычисляется только в момент
+        // считывания ответа пользователя
+        // Ответ высчитывается в зависимости от
+        // типа задачи, выставленной в боксе с ними
+        private static double trueAnswer
         {
             get
             {
@@ -38,6 +49,7 @@ namespace Mind_fastMath
                 };
             }
         }
+
 
         public static void CreateTask()
         {
@@ -66,7 +78,10 @@ namespace Mind_fastMath
 
             actualWindow.taskLabel.Content = $"{firstNumber} {op} {secondNumber}";
             actualWindow.userInField.Text = "";
+
+            SetNowTime();
         }
+
 
         public static void AnswerCheck()
         {
@@ -76,18 +91,68 @@ namespace Mind_fastMath
 
             if (Math.Round(userAnswer, 1) == Math.Round(trueAnswer, 1))
             {
-                actualWindow.resultLabel.Foreground = (Brush)new BrushConverter().ConvertFrom("#73ef6d");
-                actualWindow.resultLabel.Content = $"Верно! {trueAnswer}";
-
                 PlayCorrectSound();
+                SetEndTime();
+
+                // При переполнении текста происходит ОБНУЛЕНИЕ СРОКОВ ПУТИНА
+                if (actualWindow.stopwatchBlock.Text.Length > 34)
+                    actualWindow.stopwatchBlock.Text = "";
+
+                actualWindow.resultLabel.Foreground = (Brush)new BrushConverter().ConvertFrom("#73ef6d");
+                actualWindow.resultLabel.Content = "Верно!";
+                actualWindow.stopwatchBlock.Text += passedTimeInTimer() + "\n";
+
                 CreateTask();
             }
-            else 
+            else
             {
                 actualWindow.resultLabel.Foreground = (Brush)new BrushConverter().ConvertFrom("#ea102b");
                 actualWindow.resultLabel.Content = "Не верно!";
             }
         }
+
+
+        private static string passedTimeInTimer()
+        {
+            // Берем текущее время и вычитаем его из времени на момент
+            // таска и умножаем для получения миллисекунд, переводим в флоат
+            // и получаем строку в формате "секунды,миллисекунды".
+            // Условные операторы необходимы для случаев обнуления часа
+
+            if (_Eminute < _Sminute)
+            {
+                return (float)(
+                    (_Eminute + _Sminute) * 60 * 1000 
+                    + (_Esecond * 1000 + _Emillisecond) 
+                    - (_Ssecond * 1000 - _Smillisecond)) / 1000 + "ms";
+            }
+            else 
+            {
+                return (float)(
+                    (_Eminute % _Sminute) * 60 * 1000 
+                    + (_Esecond * 1000 + _Emillisecond) 
+                    - (_Ssecond * 1000 - _Smillisecond)) / 1000 + "ms";
+            }
+        }
+
+
+        // Время на момент создания задачи
+        private static void SetNowTime() 
+        {
+            _Smillisecond = DateTime.UtcNow.Millisecond;
+            _Ssecond = DateTime.UtcNow.Second;
+            _Sminute = DateTime.UtcNow.Minute;
+        }
+
+
+        // Время на момент проверки поля
+        private static void SetEndTime()
+        {
+            _Emillisecond = DateTime.UtcNow.Millisecond;
+            _Esecond = DateTime.UtcNow.Second;
+            _Eminute = DateTime.UtcNow.Minute;
+        }
+
 
         private static void PlayCorrectSound()
         {

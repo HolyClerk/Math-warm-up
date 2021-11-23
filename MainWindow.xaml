@@ -33,6 +33,7 @@
             <ComboBoxItem Content="Сложный" Background="#FFFB6354" BorderBrush="#FFFD5645"/>
             <ComboBoxItem Content="Сверх-сложный" Background="#FFFF40E5" BorderBrush="#FFF720DA"/>
         </ComboBox>
+        <TextBlock x:Name="stopwatchBlock" HorizontalAlignment="Left" Margin="267,180,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="119" Width="123" Foreground="#FF95F77F" FontSize="14"/>
 
     </Grid>
 </Window>
