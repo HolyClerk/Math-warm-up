@@ -21,20 +21,22 @@
             <Label x:Name="titleLabel" Content="ЗарядОчька" HorizontalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" Width="94" Foreground="#FFF56969" FontWeight="Normal" Height="27" Background="{x:Null}"/>
             <Button x:Name="exitButton" Content="x" HorizontalAlignment="Right" Margin="373,0,0,0" VerticalAlignment="Center" Height="27" Width="27" BorderThickness="0,0,0,0" Background="{x:Null}" BorderBrush="#FFE66161" Foreground="#FFF56969" Click="ExitFromProgram"/>
         </Grid>
+
         <ComboBox x:Name="ComboBoxTypeOf" HorizontalContentAlignment="Center" SelectionChanged="ComboBoxTypeOf_Selected" HorizontalAlignment="Left" Margin="267,120,0,0" VerticalAlignment="Top" Width="123" Opacity="0.9" SelectedIndex="0" IsSynchronizedWithCurrentItem="False" FontSize="14" FontFamily="Microsoft YaHei" RenderTransformOrigin="0,0" Height="26" BorderThickness="0,0,0,0">
             <ComboBoxItem Content="Сложение" Background="#FFFB6354" HorizontalContentAlignment="Center"/>
             <ComboBoxItem Content="Вычитание" Background="#FFFB6354"/>
             <ComboBoxItem Content="Умножение" Background="#FFFB6354"/>
             <ComboBoxItem Content="Деление" Background="#FFFB6354"/>
         </ComboBox>
+
         <ComboBox x:Name="ComboBoxDiff" HorizontalContentAlignment="Center" SelectionChanged="ComboBoxItem_Selected" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" Width="123" IsSynchronizedWithCurrentItem="False" SelectedIndex="1" Opacity="0.9" FontSize="14" FontFamily="Microsoft YaHei" Height="26" BorderThickness="0,0,0,0">
             <ComboBoxItem Content="Легкий" Background="#FF95F77F" BorderBrush="#FF7FF7B0"/>
             <ComboBoxItem Content="Средний" Background="#FFFFFF7C" BorderBrush="#FFDBFF7C"/>
             <ComboBoxItem Content="Сложный" Background="#FFFB6354" BorderBrush="#FFFD5645"/>
             <ComboBoxItem Content="Сверх-сложный" Background="#FFFF40E5" BorderBrush="#FFF720DA"/>
         </ComboBox>
-        <TextBlock x:Name="stopwatchBlock" HorizontalAlignment="Left" Margin="267,180,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="119" Width="123" Foreground="#FF95F77F" FontSize="14"/>
+
+        <TextBlock x:Name="stopwatchBlock" HorizontalAlignment="Left" Margin="267,172,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="148" Width="123" Foreground="#FF95F77F" FontSize="14"/>
 
     </Grid>
 </Window>
-    

@@ -65,7 +65,7 @@ namespace Mind_fastMath
             actualWindow.taskLabel.Content = $"{firstNumber} {op} {secondNumber}";
             actualWindow.userInField.Text = "";
 
-            StopwatchControler.SetNowTime();
+            StopwatchControler.SetStartTime();
         }
 
         public static void AnswerCheck()
@@ -76,17 +76,15 @@ namespace Mind_fastMath
 
             if (Math.Round(userAnswer, 1) == Math.Round(trueAnswer, 1))
             {
-                PlayCorrectSound();
-                StopwatchControler.SetEndTime();
+                PlayCorrectSound();             
+                StopwatchControler.SetEndTime(); // Устанавливаем для таймера точку окончания
 
                 // При переполнении текста происходит ОБНУЛЕНИЕ СРОКОВ ПУТИНА
-                if (actualWindow.stopwatchBlock.Text.Length > 34)
+                if (actualWindow.stopwatchBlock.Text.Length > 45)
                     actualWindow.stopwatchBlock.Text = "";
-
                 actualWindow.resultLabel.Foreground = (Brush)new BrushConverter().ConvertFrom("#73ef6d");
                 actualWindow.resultLabel.Content = "Верно!";
-                actualWindow.stopwatchBlock.Text += StopwatchControler.passedTimeInTimer() + "\n";
-
+                actualWindow.stopwatchBlock.Text += StopwatchControler.GetCountedTimeInSC() + "\n";
                 CreateTask();
             }
             else

@@ -23,33 +23,27 @@ namespace Mind_fastMath
         public MainWindow()
         {
             InitializeComponent();
-            // Изначальные параметры окна ->
-            mwin.Background = (Brush)new BrushConverter().ConvertFrom("#202226");
-            mwin.BorderBrush = (Brush)new BrushConverter().ConvertFrom("#202226");
 
-            Header.Background = (Brush)new BrushConverter().ConvertFrom("#2b2e34");
+            // Изначальные параметры окна
+            Header.Background       = (Brush)new BrushConverter().ConvertFrom("#2b2e34");
+            mwin.Background         = (Brush)new BrushConverter().ConvertFrom("#202226");
+            mwin.BorderBrush        = (Brush)new BrushConverter().ConvertFrom("#202226");
 
-            userInField.Background = (Brush)new BrushConverter().ConvertFrom("#2b2e34");
+            userInField.Background  = (Brush)new BrushConverter().ConvertFrom("#2b2e34");
             userInField.BorderBrush = (Brush)new BrushConverter().ConvertFrom("#2b2e34");
 
-            sendResult.Background = (Brush)new BrushConverter().ConvertFrom("#2b2e34");
-            sendResult.BorderBrush = (Brush)new BrushConverter().ConvertFrom("#2b2e34");
+            sendResult.Background   = (Brush)new BrushConverter().ConvertFrom("#2b2e34");
+            sendResult.BorderBrush  = (Brush)new BrushConverter().ConvertFrom("#2b2e34");
 
-            resultLabel.Foreground = (Brush)new BrushConverter().ConvertFrom("#e6e6e7");
+            resultLabel.Foreground  = (Brush)new BrushConverter().ConvertFrom("#e6e6e7");
 
-            ComboBoxDiff.Background = (Brush)new BrushConverter().ConvertFrom("#2b2e34"); // залупа нерабочая
-            // <-
+            // Задание параметров для таймера и его запуск как отдельного потока
+            StopwatchControler.timer.Tick += new EventHandler(StopwatchControler.tickRegestration);
+            StopwatchControler.timer.Interval = new TimeSpan(0, 0, 0, 0, 1000);
+            StopwatchControler.timer.Start();
         }
 
-
-        private void userInField_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key.ToString() == "Return")
-            {
-                TaskPatternCreator.AnswerCheck();
-            }
-        }
-
+        //
         private void ExitFromProgram(object sender, RoutedEventArgs e)
         {
             try
@@ -64,21 +58,25 @@ namespace Mind_fastMath
 
         private void CheckStateOfComboBox() 
         {
-            // Из-за слишком быстрого запуска ComboBox'ы не
-            // успевают прогрузиться и выдают null при
-            // запросе
+            // Из-за слишком быстрого запуска программы ComboBox'ы не
+            // успевают прогрузиться и выдают null при запросе
             if (ComboBoxDiff != null && ComboBoxTypeOf != null)
             {
                 TaskPatternCreator.CreateTask();
             }
         }
+        //
 
-        private void WinMouseDown(object sender, MouseButtonEventArgs e) => DragMove();
+        //
+        private void WinMouseDown(object sender, MouseButtonEventArgs e)        => DragMove();
 
-        private void sendResult_Click(object sender, RoutedEventArgs e) => TaskPatternCreator.AnswerCheck();
+        private void sendResult_Click(object sender, RoutedEventArgs e)         => TaskPatternCreator.AnswerCheck();
 
-        private void ComboBoxItem_Selected(object sender, RoutedEventArgs e) => CheckStateOfComboBox();
+        private void ComboBoxItem_Selected(object sender, RoutedEventArgs e)    => CheckStateOfComboBox();
 
-        private void ComboBoxTypeOf_Selected(object sender, RoutedEventArgs e) => CheckStateOfComboBox();
+        private void ComboBoxTypeOf_Selected(object sender, RoutedEventArgs e)  => CheckStateOfComboBox();
+
+        private void userInField_KeyDown(object sender, KeyEventArgs e)         { if (e.Key.ToString() == "Return") TaskPatternCreator.AnswerCheck(); }
+        //
     }
 }
