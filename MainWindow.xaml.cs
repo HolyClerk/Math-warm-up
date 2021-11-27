@@ -22,6 +22,10 @@ namespace Mind_fastMath
          */
         public MainWindow()
         {
+            // Инициализация для полей класа TaskPatternCreator
+            TaskPatternCreator.INIT();
+
+            //
             InitializeComponent();
 
             // Изначальные параметры окна

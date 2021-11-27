@@ -101,8 +101,7 @@ namespace Mind_fastMath
 
         private static void ChangeTaskForegroundHEX(string HEXcode) 
         {
-            var actualWindow = _windowCopy as MainWindow;
-            actualWindow.taskLabel.Foreground = (Brush)new BrushConverter().ConvertFrom(HEXcode);
+            (_windowCopy as MainWindow).taskLabel.Foreground = (Brush)new BrushConverter().ConvertFrom(HEXcode);
         }
     }
 }
